@@ -3,15 +3,15 @@ variable "AWS_REGION" {
 }
 
 variable "PATH_TO_PRIVATE_KEY" {
-  default = "mykey"
+  default = "ryankey"
 }
 
 variable "PATH_TO_PUBLIC_KEY" {
-  default = "mykey.pub"
+  default = "ryankey.pub"
 }
 
 variable "ECS_INSTANCE_TYPE" {
-  default = "t2.micro"
+  default = "t4g.micro"
 }
 
 variable "ECS_AMIS" {
