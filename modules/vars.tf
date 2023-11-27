@@ -3,11 +3,11 @@ variable "AWS_REGION" {
 }
 
 variable "PATH_TO_PRIVATE_KEY" {
-  default = "ryankey"
+  default = "mykeypair"
 }
 
 variable "PATH_TO_PUBLIC_KEY" {
-  default = "ryankey.pub"
+  default = "mykeypair.pub"
 }
 
 variable "ECS_INSTANCE_TYPE" {
@@ -17,7 +17,7 @@ variable "ECS_INSTANCE_TYPE" {
 variable "ECS_AMIS" {
   type = map(string)
   default = {
-    us-east-1 = "ami-1924770e"
+    us-west-2 = "ami-1924770e"
   }
 }
 
@@ -26,7 +26,7 @@ variable "ECS_AMIS" {
 variable "AMIS" {
   type = map(string)
   default = {
-    us-east-1 = "ami-0f5c19168a4bb46d3"
+    us-east-2 = "ami-0f5c19168a4bb46d3"
   }
 }
 
