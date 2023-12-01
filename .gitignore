@@ -20,4 +20,6 @@
 # Go workspace file
 go.work
 
-modules/test/
+modules/.terraform/
+modules/*.pub
+modules/mykeypair
