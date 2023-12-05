@@ -13,7 +13,7 @@ resource "aws_security_group" "frog-ecs-securitygroup" {
     from_port       = 3000
     to_port         = 3000
     protocol        = "tcp"
-    security_groups = [aws_security_group.frog-elb-securitygroup.id]
+    security_groups = [aws_security_group.frog-alb-securitygroup.id]
   }
   ingress {
     from_port   = 22
@@ -26,10 +26,10 @@ resource "aws_security_group" "frog-ecs-securitygroup" {
   }
 }
 
-# elb security group
-resource "aws_security_group" "frog-elb-securitygroup" {
+# alb security group
+resource "aws_security_group" "frog-alb-securitygroup" {
   vpc_id      = aws_vpc.frog.id
-  name        = "frog-elb"
+  name        = "frog-alb"
   description = "frog security group for ecs"
   egress {
     from_port   = 0

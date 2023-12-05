@@ -1,3 +1,3 @@
-output "frog-elb" {
-  value = aws_elb.frog-elb.dns_name
+output "frog-alb" {
+  value = aws_lb.frog-alb.dns_name
 }

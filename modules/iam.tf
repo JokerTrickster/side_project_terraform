@@ -1,6 +1,6 @@
 # EC2 인스턴스에서 실행되는 ECS 컨테이너를 위한 IAM 역할을 생성
-resource "aws_iam_role" "frog-ecs-ec2-role" {
-  name               = "frog-ecs-ec2-role"
+resource "aws_iam_role" "frog-task-execution-role" {
+  name               = "frog-task-execution-role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -20,16 +20,16 @@ EOF
 }
 
 # ECS EC2 역할에 대한 IAM 인스턴스 프로필을 정의
-resource "aws_iam_instance_profile" "frog-ecs-ec2-role" {
-  name = "frog-ecs-ec2-role"
-  role = aws_iam_role.frog-ecs-ec2-role.name
+resource "aws_iam_instance_profile" "frog-task-execution-role" {
+  name = "frog-task-execution-role"
+  role = aws_iam_role.frog-task-execution-role.name
 }
 
 
 # ECS EC2 역할에 부여되는 정책을 정의
-resource "aws_iam_role_policy" "frog-ecs-ec2-role-policy" {
-name   = "frog-ecs-ec2-role-policy"
-role   = aws_iam_role.frog-ecs-ec2-role.id
+resource "aws_iam_role_policy" "frog-task-execution-role-policy" {
+name   = "frog-task-execution-role-policy"
+role   = aws_iam_role.frog-task-execution-role.id
 policy = <<EOF
 {
     "Version": "2012-10-17",
