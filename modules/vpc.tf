@@ -56,8 +56,6 @@ resource "aws_subnet" "frog-private-2" {
   }
 }
 
-
-
 # Internet GW
 resource "aws_internet_gateway" "frog-gw" {
   vpc_id = aws_vpc.frog.id
