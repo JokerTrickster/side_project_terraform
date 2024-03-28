@@ -1,3 +1,4 @@
+
 # Internet VPC
 resource "aws_vpc" "frog" {
   cidr_block           = "10.15.0.0/16"
@@ -56,6 +57,7 @@ resource "aws_subnet" "frog-private-2" {
 }
 
 
+
 # Internet GW
 resource "aws_internet_gateway" "frog-gw" {
   vpc_id = aws_vpc.frog.id
@@ -107,12 +109,4 @@ resource "aws_route_table_association" "frog-private-1-a" {
 resource "aws_route_table_association" "frog-private-2-a" {
   subnet_id      = aws_subnet.frog-private-2.id
   route_table_id = aws_route_table.frog-private.id
-}
-
-# route for NAT instance in private route table
-resource "aws_route" "nat_route_private_1" {
-  route_table_id         = aws_route_table.frog-private.id
-  destination_cidr_block = "0.0.0.0/0"
-  network_interface_id   = aws_network_interface.frog_network_interface.id
-  depends_on             = [aws_instance.nat_instance]
 }
