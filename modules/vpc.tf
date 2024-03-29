@@ -108,3 +108,8 @@ resource "aws_route_table_association" "frog-private-2-a" {
   subnet_id      = aws_subnet.frog-private-2.id
   route_table_id = aws_route_table.frog-private.id
 }
+
+# ecs cluster
+resource "aws_ecs_cluster" "frog" {
+  name = "frog"
+}
