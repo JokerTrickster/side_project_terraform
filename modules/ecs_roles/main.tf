@@ -7,14 +7,12 @@ resource "aws_iam_role" "ecs_default_task" {
 
 data "aws_caller_identity" "current" {}
 
-data "aws_region" "current" {
-  current = true
-}
+data "aws_region" "current" {}
 
 data "template_file" "policy" {
   template = "${file("aws_caller_identity.json")}"
 
-  vars {
+  vars = {
     account_id = data.aws_caller_identity.current.account_id
     prefix     = var.prefix
     aws_region = data.aws_region.current.name

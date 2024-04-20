@@ -1,5 +1,5 @@
 # A name to describe the environment we're creating.
-environment = "test"
+environment = "frog"
 
 # The AWS-CLI profile for the account to create resources in.
 aws_profile = "default"
