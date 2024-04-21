@@ -7,6 +7,11 @@ module "network" {
   availability_zones   = var.availability_zones
   depends_id           = ""
 }
+module "ecs_roles" {
+  source      = "../ecs_roles"
+  environment = var.environment
+  cluster     = var.cluster
+}
 
 module "ecs_instances" {
   source = "../ecs_instances"
@@ -29,6 +34,76 @@ module "ecs_instances" {
   cloudwatch_prefix       = var.cloudwatch_prefix
 }
 
+
 resource "aws_ecs_cluster" "cluster" {
   name = var.cluster
+}
+
+
+resource "aws_ecs_task_definition" "task_definition" {
+  family = "${var.environment}_${var.cluster}" //dev_frog
+  container_definitions = jsonencode([
+    {
+      name      = "${var.environment}_${var.cluster}"
+      image     = "service-first"
+      cpu       = 2048
+      memory    = 512
+      essential = true
+      portMappings = [
+        {
+          containerPort = 80
+          hostPort      = 80
+          protocal      = "tcp"
+        }
+      ]
+      environment = [
+                {
+                    name: "PROJECT",
+                    value: "frog"
+                },
+                {
+                    name: "PORT",
+                    value: "80"
+                },
+                {
+                    name: "ENV",
+                    value: "__ENV__"
+                },
+                {
+                    name: "REGION",
+                    value: "__REGION__"
+                },
+                {
+                    name: "IS_LOCAL",
+                    value: "false"
+                },
+                {
+                    name: "MYSQL_USER",
+                    value: "frog"
+                },
+                {
+                    name: "MYSQL_PASSWORD",
+                    value: "examplepassword"
+                },
+                {
+                    name: "MYSQL_HOST",
+                    value: "devstg_mongodb.internal_ap-northeast-2"
+                },
+                {
+                    name: "MYSQL_PORT",
+                    value: "3306"
+                },
+                {
+                    name: "MYSQL_DATABASE",
+                    value: "frog_dev"
+                }
+      ]
+
+    }
+  ])
+  network_mode = "awsvpc"
+  requires_compatibilities = ["EC2"]
+  execution_role_arn = module.ecs_roles.ecs_default_task_execution_role_arn
+  task_role_arn = module.ecs_roles.ecs_default_task_role_arn
+  
 }

@@ -7,7 +7,7 @@ module "ecs" {
   source = "./modules/ecs"
 
   environment          = var.environment
-  cluster              = var.environment
+  cluster              = var.cluster
   cloudwatch_prefix    = "${var.environment}"           #See ecs_instances module when to set this and when not!
   vpc_cidr             = var.vpc_cidr
   public_subnet_cidrs  = var.public_subnet_cidrs
@@ -28,6 +28,9 @@ resource "aws_key_pair" "ecs" {
 
 variable "environment" {
   description = "A name to describe the environment we're creating."
+}
+variable "cluster" {
+  description = "The name of the ECS cluster."
 }
 variable "aws_profile" {
   description = "The AWS-CLI profile for the account to create resources in."

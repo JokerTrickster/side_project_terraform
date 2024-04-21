@@ -3,7 +3,6 @@ variable "environment" {
 }
 
 variable "cluster" {
-  default     = "default"
   description = "The name of the ECS cluster"
 }
 
@@ -80,3 +79,4 @@ variable "cloudwatch_prefix" {
   default     = ""
   description = "If you want to avoid cloudwatch collision or you don't want to merge all logs to one log group specify a prefix"
 }
+
