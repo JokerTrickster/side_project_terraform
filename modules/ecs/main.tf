@@ -6,9 +6,15 @@ module "network" {
   private_subnet_cidrs = var.private_subnet_cidrs
   availability_zones   = var.availability_zones
   depends_id           = ""
+  key_name             = var.key_name
 }
 module "ecs_roles" {
   source      = "../ecs_roles"
+  environment = var.environment
+  cluster     = var.cluster
+}
+module "ecr" {
+  source      = "../ecr"
   environment = var.environment
   cluster     = var.cluster
 }
@@ -45,7 +51,7 @@ resource "aws_ecs_task_definition" "task_definition" {
   container_definitions = jsonencode([
     {
       name      = "${var.environment}_${var.cluster}"
-      image     = "service-first"
+      image     = "${module.ecr.ecr_repository_url}" //"__REPO_DOMAIN__/__REPO_URL__@__IMAGE_DIGEST__"
       cpu       = 2048
       memory    = 512
       essential = true

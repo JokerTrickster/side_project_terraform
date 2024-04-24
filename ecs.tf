@@ -23,7 +23,7 @@ module "ecs" {
 
 resource "aws_key_pair" "ecs" {
   key_name   = "ecs-key-${var.environment}"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtMljjj0Ccxux5Mssqraa/iHHxheW+m0Rh17fbd8t365y9EwBn00DN/0PjdU2CK6bjxwy8BNGXWoUXiSDDtGqRupH6e9J012yE5kxhpXnnkIcLGjkAiflDBVV4sXS4b3a2LSXL5Dyb93N2GdnJ03FJM4qDJ8lfDQxb38eYHytZkmxW14xLoyW5Hbyr3SXhdHC2/ecdp5nLNRwRWiW6g9OA6jTQ3LgeOZoM6dK4ltJUQOakKjiHsE+jvmO0hJYQN7+5gYOw0HHsM+zmATvSipAWzoWBWcmBxAbcdW0R0KvCwjylCyRVbRMRbSZ/c4idZbFLZXRb7ZJkqNJuy99+ld41 ecs@aws.fake"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD6NDOEou6+NFfCVM7GP/TYxjzzngyc7aUCMdt+gnSSSvKM/IEU8pje9VVOcApeYM/uPSwN7Z71OyRLM2yvlW1oCYdnXHSe5lE49FdnHM/k+p/b+ysiKQzeGdCU6xrtpWBWwC4YC0Ap6BTse+VG+Hfoyy1tgHFsW+w94RW9qLD8rx0ot6zF9EqYQGlbch1FGEoouKOIzmbuRhXLRS2jUPvNUGuiLnyi1lsPLemlb1A+sUREOREX7ePB4pGg41ZNbiKWAI+9eGI+jkbG0qV9oMOlOLhBGFo/x4jb1wYLHMHl9+D3JdUV2QgZ6PYBRl64QsG2zbTbwfqW7ZXuTjzAcrwL mac@MACui-MacBookPro.local"
 }
 
 variable "environment" {

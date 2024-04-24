@@ -27,3 +27,7 @@ variable "availability_zones" {
 }
 
 variable "depends_id" {}
+
+variable "key_name" {
+  description = "SSH key name to be used"
+}

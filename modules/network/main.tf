@@ -32,6 +32,15 @@ module "nat" {
   subnet_count = length(var.public_subnet_cidrs)
 }
 
+module "ec2"{
+  source = "../ec2"
+
+  environment = var.environment
+  vpc_id      = module.vpc.id
+  subnet_ids  = module.public_subnet.ids
+  key_name    = var.key_name
+}
+
 resource "aws_route" "public_igw_route" {
   count                  = length(var.public_subnet_cidrs)
   route_table_id         = element(module.public_subnet.route_table_ids, count.index)

@@ -10,4 +10,8 @@ resource "aws_nat_gateway" "nat" {
 resource "aws_eip" "nat" {
   domain = "vpc"
   count = var.subnet_count
+
+  tags = {
+    Name        = "nat_eip_${count.index}"
+  }
 }
