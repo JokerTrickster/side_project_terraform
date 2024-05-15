@@ -41,11 +41,11 @@ resource "aws_eip" "utils_eip"{
     }
 }
 resource "aws_instance" "utils_instance" {
-  ami = "ami-0e4b1df799f55b8bb"
+  ami = "ami-0e4b1df799f55b8bb" //arm64
   instance_market_options {
     market_type = "spot"
     spot_options {
-      max_price = 0.008
+      max_price = 0.0092
     }
   }
   key_name = var.key_name
@@ -54,6 +54,10 @@ resource "aws_instance" "utils_instance" {
     device_index                 = 0
   }
   instance_type = "t4g.small"
+
+  // /templates/user_data.sh
+  user_data = file("${path.module}/templates/user_data.sh")
+
   tags = {
     Name = "utils-spot"
   }
