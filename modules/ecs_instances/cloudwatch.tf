@@ -32,3 +32,8 @@ resource "aws_cloudwatch_log_group" "messages" {
   name              = "${var.cloudwatch_prefix}/var/log/messages"
   retention_in_days = 30
 }
+
+resource "aws_cloudwatch_log_group" "ecs-service" {
+  name              = "ecs-idea-dev_frog"
+  retention_in_days = 7
+}

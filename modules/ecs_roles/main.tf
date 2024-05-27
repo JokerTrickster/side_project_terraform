@@ -78,7 +78,9 @@ resource "aws_iam_policy" "ecs_default_task_execution_policy" {
         Effect: "Allow",
         Action: [
           "ecr:*",
-          "cloudwatch:*"
+          "cloudwatch:*",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
         ],
         Resource: "*"
       }
