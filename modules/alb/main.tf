@@ -47,10 +47,19 @@ resource "aws_security_group" "alb" {
   }
 }
 
-resource "aws_security_group_rule" "https_from_anywhere" {
+resource "aws_security_group_rule" "http_from_anywhere" {
   type              = "ingress"
   from_port         = 80
   to_port           = 80
+  protocol          = "TCP"
+  cidr_blocks       = var.allow_cidr_block
+  security_group_id = aws_security_group.alb.id
+}
+
+resource "aws_security_group_rule" "https_from_anywhere"{
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
   protocol          = "TCP"
   cidr_blocks       = var.allow_cidr_block
   security_group_id = aws_security_group.alb.id
@@ -64,3 +73,4 @@ resource "aws_security_group_rule" "outbound_internet_access" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.alb.id
 }
+
