@@ -1,5 +1,5 @@
 variable "alb_name" {
-  default     = "default"
+  default     = "frog-alb"
   description = "The name of the loadbalancer"
 }
 
@@ -22,11 +22,21 @@ variable "deregistration_delay" {
 }
 
 variable "health_check_path" {
-  default     = "/"
+  default     = "/health"
   description = "The default health check path"
 }
 
 variable "allow_cidr_block" {
   default     = ["0.0.0.0/0"]
   description = "Specify cidr block that is allowed to access the LoadBalancer"
+}
+
+variable "certificate_arn"{
+  default     = "arn:aws:acm:ap-northeast-2:730335282594:certificate/272564fe-09a2-46a4-8f99-6869fa043ce1"
+  description = "The ARN of the certificate to use for HTTPS"
+}
+
+variable "hosted_zone"{
+  default     = "jokertrickster.com"
+  description = "The hosted zone to use for the DNS record"
 }
