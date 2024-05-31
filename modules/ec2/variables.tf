@@ -14,3 +14,4 @@ variable "subnet_ids" {
 variable "key_name" {
     description = "The key name"
 }
+

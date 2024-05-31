@@ -17,3 +17,4 @@ output "public_subnet_ids" {
 output "depends_id" {
   value = null_resource.dummy_dependency.id
 }
+

@@ -1,3 +1,8 @@
+module "ssm" {
+  source      = "../ssm"
+  mysql_host = aws_eip.utils_eip[0].public_ip
+}
+
 resource "aws_security_group" "ssh_sg" {
   name        = "ssh_security_group"
   description = "Allow SSH access from all IPs"
