@@ -15,6 +15,12 @@ resource "aws_security_group" "ssh_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]  # SSH access from all IPs
   }
+  ingress {
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow all TCP traffic from all IPs
+  }
 
   egress {
     from_port   = 0

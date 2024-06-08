@@ -30,7 +30,7 @@ variable "instance_type" {
 }
 
 variable "max_size" {
-  default     = 1
+  default     = 2
   description = "Maximum size of the nodes in the cluster"
 }
 
@@ -41,7 +41,7 @@ variable "min_size" {
 
 #For more explenation see http://docs.aws.amazon.com/autoscaling/latest/userguide/WhatIsAutoScaling.html
 variable "desired_capacity" {
-  default     = 1
+  default     = 2
   description = "The desired capacity of the cluster"
 }
 

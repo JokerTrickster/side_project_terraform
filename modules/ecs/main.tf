@@ -53,7 +53,7 @@ resource "aws_ecs_task_definition" "task_definition" {
       name      = "${var.environment}_${var.cluster}"
       image     = "${module.ecr.ecr_repository_url}" //"__REPO_DOMAIN__/__REPO_URL__@__IMAGE_DIGEST__"
       cpu       = 2048
-      memory    = 512
+      memory    = 412
       essential = true
       portMappings = [
         {
