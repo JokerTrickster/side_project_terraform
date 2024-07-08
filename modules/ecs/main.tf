@@ -5,7 +5,7 @@ module "network" {
   public_subnet_cidrs  = var.public_subnet_cidrs
   private_subnet_cidrs = var.private_subnet_cidrs
   availability_zones   = var.availability_zones
-  depends_id           = ""
+  # depends_id           = ""
   key_name             = var.key_name
 }
 module "ecs_roles" {
@@ -35,7 +35,7 @@ module "ecs_instances" {
   iam_instance_profile_id = aws_iam_instance_profile.ecs.id
   key_name                = var.key_name
   load_balancers          = var.load_balancers
-  depends_id              = module.network.depends_id
+  # depends_id              = module.network.depends_id
   custom_userdata         = var.custom_userdata
   cloudwatch_prefix       = var.cloudwatch_prefix
 }

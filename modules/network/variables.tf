@@ -26,7 +26,7 @@ variable "availability_zones" {
   description = "List of availability zones you want. Example: ap-northeast-2a and ap-northeast-2b"
 }
 
-variable "depends_id" {}
+# variable "depends_id" {}
 
 variable "key_name" {
   description = "SSH key name to be used"
