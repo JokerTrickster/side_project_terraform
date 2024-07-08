@@ -43,15 +43,30 @@ resource "aws_security_group_rule" "outbound_internet_access" {
   security_group_id = aws_security_group.instance.id
 }
 
+resource "aws_security_group_rule" "inbound_internet_access" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.instance.id
+}
+
 # Default disk size for Docker is 22 gig, see http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html
 resource "aws_launch_configuration" "launch" {
   name_prefix          = "${var.environment}_${var.cluster}_${var.instance_group}_"
   image_id             = var.aws_ami != "" ? var.aws_ami : data.aws_ami.latest_ecs_ami.image_id
   instance_type        = var.instance_type
   security_groups      = ["${aws_security_group.instance.id}"]
-  user_data            = data.template_file.user_data.rendered
+  //user_data            = data.template_file.user_data.rendered
   iam_instance_profile = var.iam_instance_profile_id
   key_name             = var.key_name
+  
+  user_data = <<-EOF
+    #!/bin/bash
+    echo ECS_CLUSTER=${var.cluster} >> /etc/ecs/ecs.config
+  EOF
+
 
   # aws_launch_configuration can not be modified.
   # Therefore we use create_before_destroy so that a new modified aws_launch_configuration can be created 
@@ -98,11 +113,11 @@ resource "aws_autoscaling_group" "asg" {
 
   # EC2 instances require internet connectivity to boot. Thus EC2 instances must not start before NAT is available.
   # For info why see description in the network module.
-  tag {
-    key                 = "DependsId"
-    value               = var.depends_id
-    propagate_at_launch = "false"
-  }
+  # tag {
+  #   key                 = "DependsId"
+  #   value               = var.depends_id
+  #   propagate_at_launch = "false"
+  # }
 }
 
 data "template_file" "user_data" {

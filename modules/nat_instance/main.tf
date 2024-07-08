@@ -1,10 +1,3 @@
-module "vpc"{
-    source = "../vpc"
-
-    cidr = var.vpc_cidr
-    environment = var.environment
-}
-
 
 //sg_nat_instance
 resource "aws_security_group" "sg_nat_instance" {
@@ -17,8 +10,8 @@ resource "aws_security_group" "sg_nat_instance" {
 }
 
 resource "aws_instance" "nat_instance" {
-    ami = "ami-08074b02473276b92"
-    instance_type = "t2.micro"
+    ami = "ami-01ad0c7a4930f0e43"
+    instance_type = "t3.nano"
     vpc_security_group_ids = [aws_security_group.sg_nat_instance.id]
     subnet_id = var.public_subnets[0]
     associate_public_ip_address = true
@@ -51,7 +44,7 @@ resource "aws_security_group_rule" "sg_nat_instance_inbound" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = [var.vpc_cidr]
+    cidr_blocks = ["0.0.0.0/0"]
     description = "Allow SSH inbound traffic"
 }
 
@@ -72,10 +65,30 @@ resource "aws_security_group_rule" "sg_nat_instnace_inbound_http"{
     from_port = 80
     to_port = 80
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.vpc_cidr]
     description =  "Allow HTTP inbound traffic"
 }
 
+resource "aws_security_group_rule" "sg_nat_instance_inbound_https"{
+    security_group_id = aws_security_group.sg_nat_instance.id
+    type = "ingress"
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+    description = "Allow HTTPS inbound traffic"
+}
+
+//icmp
+resource "aws_security_group_rule" "sg_nat_instance_inbound_icmp"{
+    security_group_id = aws_security_group.sg_nat_instance.id
+    type = "ingress"
+    from_port = 0
+    to_port = 0
+    protocol = "icmp"
+    cidr_blocks = [var.vpc_cidr]
+    description = "Allow ICMP inbound traffic"
+}
 
 resource "aws_security_group_rule" "sg_nat_jnstance_outbound" {
     security_group_id = aws_security_group.sg_nat_instance.id

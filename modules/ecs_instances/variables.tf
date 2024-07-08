@@ -61,9 +61,9 @@ variable "load_balancers" {
   description = "The load balancers to couple to the instances. Only used when NOT using ALB"
 }
 
-variable "depends_id" {
-  description = "Workaround to wait for the NAT gateway to finish before starting the instances"
-}
+# variable "depends_id" {
+#   description = "Workaround to wait for the NAT gateway to finish before starting the instances"
+# }
 
 variable "key_name" {
   description = "SSH key name to be used"
