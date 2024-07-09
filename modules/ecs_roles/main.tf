@@ -33,7 +33,7 @@ resource "aws_iam_policy" "ecs_default_task_policy" {
         Resource: "*"
       },
       {
-        Action: ["ssm:GetParameters"],
+        Action: ["ssm:*"],
         Effect: "Allow",
         Resource: "*"
       }

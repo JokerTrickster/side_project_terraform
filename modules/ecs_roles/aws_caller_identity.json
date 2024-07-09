@@ -7,7 +7,7 @@
       "Resource": "*"
     },
     {
-      "Action": ["ssm:GetParameters"],
+      "Action": ["ssm:*"],
       "Effect": "Allow",
       "Resource": "arn:aws:ssm:$${aws_region}:$${account_id}:parameter/$${prefix}*"
     }
