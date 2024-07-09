@@ -3,8 +3,8 @@ module "ssm" {
   mysql_host = aws_eip.utils_eip[0].public_ip
 }
 
-resource "aws_security_group" "ssh_sg" {
-  name        = "ssh_security_group"
+resource "aws_security_group" "utils_sg" {
+  name        = "utils_security_group"
   description = "Allow SSH access from all IPs"
 
   vpc_id = var.vpc_id
@@ -21,6 +21,13 @@ resource "aws_security_group" "ssh_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]  # Allow all TCP traffic from all IPs
   }
+  // mysql port
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+  }
 
   egress {
     from_port   = 0
@@ -30,13 +37,13 @@ resource "aws_security_group" "ssh_sg" {
   }
 
   tags = {
-    Name = "SSH Security Group"
+    Name = "utils server Security Group"
   }
 }
 
 resource "aws_network_interface" "network_interface" {
   subnet_id   = var.subnet_ids[0]
-  security_groups = [aws_security_group.ssh_sg.id]
+  security_groups = [aws_security_group.utils_sg.id]
   
   tags = {
     Name = "primary_network_interface"

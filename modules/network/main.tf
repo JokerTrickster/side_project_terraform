@@ -34,13 +34,14 @@ module "public_subnet" {
 # }
 
 
-module "ec2"{
-  source = "../ec2"
+module "ec2_utils"{
+  source = "../ec2_utils"
 
   environment = var.environment
   vpc_id      = module.vpc.id
   subnet_ids  = module.public_subnet.ids
   key_name    = var.key_name
+  vpc_cidr    = module.vpc.cidr_block
 }
 
 resource "aws_route" "public_igw_route" {

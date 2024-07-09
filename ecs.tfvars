@@ -31,7 +31,7 @@ private_subnet_cidrs = ["10.12.1.0/24", "10.12.6.0/24"]
 availability_zones = ["ap-northeast-2a", "ap-northeast-2b"]
 
 # Maximum number of instances in the ECS cluster.
-max_size = 1
+max_size = 2
 
 # Minimum number of instances in the ECS cluster.
 min_size = 1

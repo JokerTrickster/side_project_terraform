@@ -15,3 +15,6 @@ variable "key_name" {
     description = "The key name"
 }
 
+variable "vpc_cidr" {
+    description = "The VPC CIDR"
+}
