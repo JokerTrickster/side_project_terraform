@@ -42,7 +42,7 @@ resource "aws_security_group" "utils_sg" {
 }
 
 resource "aws_network_interface" "network_interface" {
-  subnet_id   = var.subnet_ids[0]
+  subnet_id   = var.subnet_ids[1]
   security_groups = [aws_security_group.utils_sg.id]
   
   tags = {
