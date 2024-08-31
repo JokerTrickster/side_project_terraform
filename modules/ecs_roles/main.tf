@@ -1,6 +1,12 @@
-// ecs task role create
-resource "aws_iam_role" "ecs_default_task_role" {
-  name = "${var.environment}_${var.cluster}_default_task_role"
+/*
+   네이밍 규칙
+  {환경}_{프로젝트명}_*
+*/
+
+
+// frog 프로젝트 role 
+resource "aws_iam_role" "dev_frog_ecs_task_role" {
+  name = "dev_frog_ecs_task_role"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -19,8 +25,8 @@ resource "aws_iam_role" "ecs_default_task_role" {
 }
 
 
-resource "aws_iam_policy" "ecs_default_task_policy" {
-  name        = "${var.environment}_${var.cluster}_ecs_default_task_policy"
+resource "aws_iam_policy" "dev_frog_ecs_task_policy" {
+  name        = "dev_frog_ecs_task_policy"
   path        = "/"
 
   # Terraform's "jsonencode" function converts a
@@ -41,16 +47,16 @@ resource "aws_iam_policy" "ecs_default_task_policy" {
 })
 }
 
-resource "aws_iam_policy_attachment" "ecs_task_role" {
-  name       = "${var.environment}_${var.cluster}_ecs_task_role"
-  roles      = ["${aws_iam_role.ecs_default_task_role.name}"]
-  policy_arn = aws_iam_policy.ecs_default_task_policy.arn
+resource "aws_iam_policy_attachment" "dev_frog_ecs_task_role_attachment" {
+  name       = "dev_frog_ecs_task_role"
+  roles      = ["${aws_iam_role.dev_frog_ecs_task_role.name}"]
+  policy_arn = aws_iam_policy.dev_frog_ecs_task_policy.arn
 }
 
 
 // ecs task execution role create
-resource "aws_iam_role" "ecs_default_task_execution_role" {
-  name = "${var.environment}_${var.cluster}_default_task_execution_role"
+resource "aws_iam_role" "dev_frog_ecs_task_execution_role" {
+  name = "dev_frog_ecs_task_execution_role"
 
   assume_role_policy = jsonencode({
     Version: "2012-10-17",
@@ -66,8 +72,8 @@ resource "aws_iam_role" "ecs_default_task_execution_role" {
   })
 }
 
-resource "aws_iam_policy" "ecs_default_task_execution_policy" {
-  name        = "${var.environment}_${var.cluster}_ecs_default_task_execution_policy"
+resource "aws_iam_policy" "dev_frog_ecs_task_execution_policy" {
+  name        = "dev_frog_ecs_task_execution_policy"
   path        = "/"
 
   // ecr, cloudwatch full access
@@ -80,7 +86,8 @@ resource "aws_iam_policy" "ecs_default_task_execution_policy" {
           "ecr:*",
           "cloudwatch:*",
           "logs:CreateLogStream",
-          "logs:PutLogEvents"
+          "logs:PutLogEvents",
+          "ssm:*"
         ],
         Resource: "*"
       }
@@ -88,8 +95,108 @@ resource "aws_iam_policy" "ecs_default_task_execution_policy" {
   })
 }
 
-resource "aws_iam_policy_attachment" "ecs_task_execution_role" {
-  name       = "${var.environment}_${var.cluster}_ecs_task_execution_role"
-  roles      = ["${aws_iam_role.ecs_default_task_execution_role.name}"]
-  policy_arn = aws_iam_policy.ecs_default_task_execution_policy.arn
+resource "aws_iam_policy_attachment" "dev_frog_ecs_task_execution_role_attachment" {
+  name       = "dev_frog_ecs_task_execution_role"
+  roles      = ["${aws_iam_role.dev_frog_ecs_task_execution_role.name}"]
+  policy_arn = aws_iam_policy.dev_frog_ecs_task_execution_policy.arn
+}
+
+
+
+// food 프로젝트 role
+
+resource "aws_iam_role" "dev_food_ecs_task_role" {
+  name = "dev_food_ecs_task_role"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  assume_role_policy = jsonencode({
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Effect: "Allow",
+        Principal: {
+          Service: ["ecs-tasks.amazonaws.com"]
+        },
+        Action: "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+
+resource "aws_iam_policy" "dev_food_ecs_task_policy" {
+  name        = "dev_food_ecs_task_policy"
+  path        = "/"
+
+  # Terraform's "jsonencode" function converts a
+  policy = jsonencode({
+      Version : "2012-10-17",
+      Statement: [
+      {
+        Action: ["ssm:DescribeParameters"],
+        Effect: "Allow",
+        Resource: "*"
+      },
+      {
+        Action: ["ssm:*"],
+        Effect: "Allow",
+        Resource: "*"
+      }
+    ]
+})
+}
+
+resource "aws_iam_policy_attachment" "dev_food_ecs_task_role_attachment" {
+  name       = "dev_food_ecs_task_role"
+  roles      = ["${aws_iam_role.dev_food_ecs_task_role.name}"]
+  policy_arn = aws_iam_policy.dev_food_ecs_task_policy.arn
+}
+
+
+// ecs task execution role create
+resource "aws_iam_role" "dev_food_ecs_task_execution_role" {
+  name = "dev_food_ecs_task_execution_role"
+
+  assume_role_policy = jsonencode({
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Effect: "Allow",
+        Principal: {
+          Service: ["ecs-tasks.amazonaws.com"]
+        },
+        Action: "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "dev_food_ecs_task_execution_policy" {
+  name        = "dev_food_ecs_task_execution_policy"
+  path        = "/"
+
+  // ecr, cloudwatch full access
+  policy = jsonencode({
+    Version : "2012-10-17",
+    Statement: [
+      {
+        Effect: "Allow",
+        Action: [
+          "ecr:*",
+          "cloudwatch:*",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "ssm:*"
+        ],
+        Resource: "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy_attachment" "dev_food_ecs_task_execution_role_attachment" {
+  name       = "dev_food_ecs_task_execution_role"
+  roles      = ["${aws_iam_role.dev_food_ecs_task_execution_role.name}"]
+  policy_arn = aws_iam_policy.dev_food_ecs_task_execution_policy.arn
 }
