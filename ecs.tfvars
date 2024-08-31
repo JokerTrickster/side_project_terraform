@@ -2,7 +2,7 @@
 environment = "dev"
 
 # The name of the ECS cluster.
-cluster = "frog"
+cluster = "service"
 
 # The AWS-CLI profile for the account to create resources in.
 aws_profile = "default"
