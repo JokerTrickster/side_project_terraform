@@ -1,7 +1,3 @@
-variable "alb_name" {
-  default     = "frog-alb"
-  description = "The name of the loadbalancer"
-}
 
 variable "environment" {
   description = "The name of the environment"
@@ -36,7 +32,7 @@ variable "certificate_arn"{
   description = "The ARN of the certificate to use for HTTPS"
 }
 
-variable "hosted_zone"{
+variable "dev_common_hosted_zone"{
   default     = "jokertrickster.com"
   description = "The hosted zone to use for the DNS record"
 }

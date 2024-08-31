@@ -1,7 +1,7 @@
-output "alb_security_group_id" {
-  value = aws_security_group.alb.id
+output "dev_common_alb_sg_id" {
+  value = aws_security_group.dev_common_alb_sg.id
 }
 
-output "default_alb_target_group" {
-  value = aws_alb_target_group.default.arn
+output "dev_common_alb_target_group" {
+  value = aws_alb_target_group.dev_common_target_group.arn
 }
