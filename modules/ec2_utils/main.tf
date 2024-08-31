@@ -82,7 +82,9 @@ resource "aws_instance" "dev_common_utils_instance" {
     device_index                 = 0
   }
   instance_type = "t4g.small"
-
+  root_block_device {
+    volume_size = 20  # 기존 8GB에서 20GB로 변경
+  }
   // /templates/user_data.sh
   user_data = file("${path.module}/templates/user_data.sh")
 

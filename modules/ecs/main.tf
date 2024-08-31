@@ -32,7 +32,7 @@ module "ecs_instances" {
   min_size                = var.min_size
   desired_capacity        = var.desired_capacity
   vpc_id                  = module.network.vpc_id
-  iam_instance_profile_id = aws_iam_instance_profile.ecs.id
+  iam_instance_profile_id = aws_iam_instance_profile.dev_common_ecs_instance_profile.id
   key_name                = var.key_name
   load_balancers          = var.load_balancers
   # depends_id              = module.network.depends_id
@@ -54,7 +54,7 @@ resource "aws_ecs_task_definition" "dev_frog_task_definition" {
   family = "dev_frog" //dev_frog
   container_definitions = jsonencode([
     {
-      name      = "dev_frog_task_definition"
+      name      = "dev_frog"
       image     = "${module.ecr.dev_frog_ecr_repository_url}" //"__REPO_DOMAIN__/__REPO_URL__@__IMAGE_DIGEST__"
       cpu       = 2048
       memory    = 412
@@ -142,10 +142,10 @@ resource "aws_ecs_task_definition" "dev_frog_task_definition" {
 
 //frog 
 resource "aws_ecs_task_definition" "dev_food_task_definition" {
-  family = "dev_food" //dev_frog
+  family = "dev_food-recommendation" //dev_frog
   container_definitions = jsonencode([
     {
-      name      = "dev_food_task_definition"
+      name      = "dev_food-recommendation"
       image     = "${module.ecr.dev_food_ecr_repository_url}" //"__REPO_DOMAIN__/__REPO_URL__@__IMAGE_DIGEST__"
       cpu       = 2048
       memory    = 412

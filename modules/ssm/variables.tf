@@ -51,9 +51,6 @@ variable "dev_food_mysql_db" {
     default = "dev_food"
 }
 
-
-
-
 variable "dev_food_redis_user" {
     description = "Redis user"
     default = "food"  

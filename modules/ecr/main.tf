@@ -5,7 +5,7 @@
 
 // frog 프로젝트 
 resource "aws_ecr_repository" "dev_frog_ecr_repository" {
-  name                 = "dev_frog_repository"
+  name                 = "dev_frog"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
@@ -15,7 +15,7 @@ resource "aws_ecr_repository" "dev_frog_ecr_repository" {
 
 // food 프로젝트
 resource "aws_ecr_repository" "dev_food_ecr_repository" {
-  name                 = "dev_food_repository"
+  name                 = "dev_food-recommendation"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {

@@ -54,7 +54,7 @@ resource "aws_ssm_parameter" "dev_frog_redis_user" {
   value = var.dev_frog_redis_user
 }
 
-resource "aws_ssm_parameter" "dev_redis_db" {
+resource "aws_ssm_parameter" "dev_frog_redis_db" {
   name  = "dev_frog_redis_db"
   type  = "String"
   value = var.dev_frog_redis_db
@@ -74,7 +74,7 @@ resource "aws_ssm_parameter" "dev_food_mysql_db" {
 }
 
 resource "aws_ssm_parameter" "dev_food_redis_user" {
-  name  = "dev_frog_redis_user"
+  name  = "dev_food_redis_user"
   type  = "String"
   value = var.dev_food_redis_user
 }

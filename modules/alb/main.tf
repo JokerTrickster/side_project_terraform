@@ -1,7 +1,7 @@
 # Default ALB implementation that can be used connect ECS instances to it
 
 resource "aws_alb_target_group" "dev_common_target_group" {
-  name                 = "dev_common_target_group"
+  name                 = "dev-common-target-group"
   port                 = 80
   protocol             = "HTTP"
   vpc_id               = var.vpc_id
@@ -19,7 +19,7 @@ resource "aws_alb_target_group" "dev_common_target_group" {
 }
 
 resource "aws_alb" "dev_common_alb" {
-  name            = "dev_common_alb"
+  name            = "dev-common-alb"
   subnets         = var.public_subnet_ids
   security_groups = ["${aws_security_group.dev_common_alb_sg.id}"]
 
