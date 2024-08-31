@@ -32,7 +32,7 @@ variable "key_name" {
   type        = string
 }
 
-variable "nat_instance_network_interface_id"   {
+variable "dev_common_nat_instance_network_interface_id"   {
   description = "The ID of the NAT instance network interface"
   type        = string
   

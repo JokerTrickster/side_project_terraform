@@ -1,15 +1,21 @@
+/*
+   서비스별 네이밍 규칙
+   {환경}_{프로젝트명}_*
+인스턴스는 맨 뒤에 spot 인지 ondemand 인지 표기 
+    
+*/
 
 //sg_nat_instance
-resource "aws_security_group" "sg_nat_instance" {
+resource "aws_security_group" "dev_common_sg_nat_instance" {
     vpc_id = var.vpc_id
-    name = "sg_nat_instance"
+    name = "dev_common_sg_nat_instance"
 
     tags = {
-        Name = "sg_nat_instance"
+        Name = "dev_common_sg_nat_instance"
     }
 }
 
-resource "aws_instance" "nat_instance" {
+resource "aws_instance" "dev_common_nat_instance" {
     ami = "ami-01ad0c7a4930f0e43"
     instance_type = "t3.nano"
     instance_market_options {
@@ -19,7 +25,7 @@ resource "aws_instance" "nat_instance" {
       }
       
     }
-    vpc_security_group_ids = [aws_security_group.sg_nat_instance.id]
+    vpc_security_group_ids = [aws_security_group.dev_common_sg_nat_instance.id]
     subnet_id = var.public_subnets[0]
     associate_public_ip_address = true
     source_dest_check = false
@@ -31,22 +37,22 @@ resource "aws_instance" "nat_instance" {
         encrypted = true
     }
     tags = {
-        Name = "nat_instance_spot"
+        Name = "dev_common_nat_instance_spot"
     }
 }
 
 // attach eip to nat instance
-resource "aws_eip" "nat_instance_eip" {
-    instance = aws_instance.nat_instance.id
+resource "aws_eip" "dev_common_nat_instance_eip" {
+    instance = aws_instance.dev_common_nat_instance.id
 
     tags = {
-        Name = "nat_instance_eip"
+        Name = "dev_common_nat_instance_eip"
     }
 }
 
 // sg_nat_instance rules inbound and outbound
-resource "aws_security_group_rule" "sg_nat_instance_inbound" {
-    security_group_id = aws_security_group.sg_nat_instance.id
+resource "aws_security_group_rule" "dev_common_sg_nat_instance_inbound" {
+    security_group_id = aws_security_group.dev_common_sg_nat_instance.id
     type = "ingress"
     from_port = 22
     to_port = 22
@@ -56,8 +62,8 @@ resource "aws_security_group_rule" "sg_nat_instance_inbound" {
 }
 
 
-resource "aws_security_group_rule" "private_subnet_inbound" {
-    security_group_id = aws_security_group.sg_nat_instance.id
+resource "aws_security_group_rule" "dev_common_private_subnet_inbound" {
+    security_group_id = aws_security_group.dev_common_sg_nat_instance.id
     type = "ingress"
     from_port = 0
     to_port = 0
@@ -66,8 +72,8 @@ resource "aws_security_group_rule" "private_subnet_inbound" {
     description = "Allow all inbound traffic from VPC"
 }
 
-resource "aws_security_group_rule" "sg_nat_instnace_inbound_http"{
-    security_group_id = aws_security_group.sg_nat_instance.id
+resource "aws_security_group_rule" "dev_common_sg_nat_instnace_inbound_http"{
+    security_group_id = aws_security_group.dev_common_sg_nat_instance.id
     type = "ingress"
     from_port = 80
     to_port = 80
@@ -76,8 +82,8 @@ resource "aws_security_group_rule" "sg_nat_instnace_inbound_http"{
     description =  "Allow HTTP inbound traffic"
 }
 
-resource "aws_security_group_rule" "sg_nat_instance_inbound_https"{
-    security_group_id = aws_security_group.sg_nat_instance.id
+resource "aws_security_group_rule" "dev_common_sg_nat_instance_inbound_https"{
+    security_group_id = aws_security_group.dev_common_sg_nat_instance.id
     type = "ingress"
     from_port = 443
     to_port = 443
@@ -87,8 +93,8 @@ resource "aws_security_group_rule" "sg_nat_instance_inbound_https"{
 }
 
 //icmp
-resource "aws_security_group_rule" "sg_nat_instance_inbound_icmp"{
-    security_group_id = aws_security_group.sg_nat_instance.id
+resource "aws_security_group_rule" "dev_common_sg_nat_instance_inbound_icmp"{
+    security_group_id = aws_security_group.dev_common_sg_nat_instance.id
     type = "ingress"
     from_port = 0
     to_port = 0
@@ -97,8 +103,8 @@ resource "aws_security_group_rule" "sg_nat_instance_inbound_icmp"{
     description = "Allow ICMP inbound traffic"
 }
 
-resource "aws_security_group_rule" "sg_nat_jnstance_outbound" {
-    security_group_id = aws_security_group.sg_nat_instance.id
+resource "aws_security_group_rule" "dev_common_sg_nat_jnstance_outbound" {
+    security_group_id = aws_security_group.dev_common_sg_nat_instance.id
     type = "egress"
     from_port = 0
     to_port = 0
@@ -108,12 +114,12 @@ resource "aws_security_group_rule" "sg_nat_jnstance_outbound" {
     }
 
 
-resource "aws_network_interface" "primary_network_interface" {
+resource "aws_network_interface" "dev_common_primary_network_interface" {
     subnet_id = var.public_subnets[0]
-    security_groups = [aws_security_group.sg_nat_instance.id]
+    security_groups = [aws_security_group.dev_common_sg_nat_instance.id]
     source_dest_check = false
     description = "Primary network interface for NAT instance"
     tags = {
-        Name = "nat_instance"
+        Name = "dev_common_nat_instance"
     }
 }
