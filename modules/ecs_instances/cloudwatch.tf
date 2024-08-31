@@ -33,7 +33,24 @@ resource "aws_cloudwatch_log_group" "messages" {
   retention_in_days = 30
 }
 
-resource "aws_cloudwatch_log_group" "ecs-service" {
-  name              = "ecs-idea-dev_frog"
+// frog 프로젝트
+resource "aws_cloudwatch_log_group" "dev_frog_ecs_service" {
+  name              = "dev_frog_ecs_service"
+  retention_in_days = 7
+}
+resource "aws_cloudwatch_log_group" "dev_frog_ecs_promtail" {
+  name              = "dev_frog_ecs_promtail"
+  retention_in_days = 7
+}
+
+
+// food 프로젝트 
+resource "aws_cloudwatch_log_group" "dev_food_ecs_promtail" {
+  name              = "dev_food_ecs_promtail"
+  retention_in_days = 7
+}
+
+resource "aws_cloudwatch_log_group" "dev_food_ecs_service" {
+  name              = "dev_food_ecs_service"
   retention_in_days = 7
 }

@@ -8,6 +8,7 @@ variable "cloudwatch_prefix" {
 }
 
 variable "cluster" {
+  default = "service"
   description = "The name of the cluster"
 }
 
