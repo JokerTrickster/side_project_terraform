@@ -83,7 +83,7 @@ module "nat_instance"{
   private_subnets_cidr_blocks = var.private_subnet_cidrs
   vpc_cidr = module.vpc.cidr_block
   key_name = var.key_name
-  nat_instance_network_interface_id = module.nat_instance.nat_instance_network_interface_id
+  dev_common_nat_instance_network_interface_id = module.nat_instance.dev_common_nat_instance_network_interface_id
 
 }
 
@@ -91,7 +91,7 @@ module "nat_instance"{
 resource "aws_route" "private_nat_instance_route" {
   count                  = length(var.private_subnet_cidrs)
   route_table_id         = element(module.private_subnet.route_table_ids, count.index)
-  network_interface_id            = module.nat_instance.nat_instance_network_interface_id
+  network_interface_id            = module.nat_instance.dev_common_nat_instance_network_interface_id
   destination_cidr_block = var.destination_cidr_block
 }
 resource "null_resource" "dummy_dependency" {

@@ -2,7 +2,7 @@
 environment = "dev"
 
 # The name of the ECS cluster.
-cluster = "frog"
+cluster = "service"
 
 # The AWS-CLI profile for the account to create resources in.
 aws_profile = "default"
@@ -31,13 +31,13 @@ private_subnet_cidrs = ["10.12.1.0/24", "10.12.6.0/24"]
 availability_zones = ["ap-northeast-2a", "ap-northeast-2b"]
 
 # Maximum number of instances in the ECS cluster.
-max_size = 2
+max_size = 3
 
 # Minimum number of instances in the ECS cluster.
-min_size = 1
+min_size = 2
 
 # Ideal number of instances in the ECS cluster.
-desired_capacity = 1
+desired_capacity = 3
 
 # Size of instances in the ECS cluster.
 # t4g.micro	USD 0.0084	최대 5기가비트

@@ -3,5 +3,6 @@ variable "environment" {
 }
 
 variable "cluster" {
+  default = "service"
   description = "The name of the ECS cluster"
 }

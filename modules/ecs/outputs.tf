@@ -1,3 +1,3 @@
-output "default_alb_target_group" {
-  value = module.alb.default_alb_target_group
+output "dev_common_target_group" {
+  value = module.alb.dev_common_alb_target_group
 }

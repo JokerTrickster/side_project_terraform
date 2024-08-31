@@ -1,7 +1,7 @@
 # Default ALB implementation that can be used connect ECS instances to it
 
-resource "aws_alb_target_group" "default" {
-  name                 = "${var.alb_name}-default"
+resource "aws_alb_target_group" "dev_common_target_group" {
+  name                 = "dev-common-target-group"
   port                 = 80
   protocol             = "HTTP"
   vpc_id               = var.vpc_id
@@ -18,10 +18,10 @@ resource "aws_alb_target_group" "default" {
   }
 }
 
-resource "aws_alb" "alb" {
-  name            = var.alb_name
+resource "aws_alb" "dev_common_alb" {
+  name            = "dev-common-alb"
   subnets         = var.public_subnet_ids
-  security_groups = ["${aws_security_group.alb.id}"]
+  security_groups = ["${aws_security_group.dev_common_alb_sg.id}"]
 
   tags = {
     Environment = var.environment
@@ -29,25 +29,25 @@ resource "aws_alb" "alb" {
 }
 
 resource "aws_alb_listener" "http" {
-  load_balancer_arn = aws_alb.alb.id
+  load_balancer_arn = aws_alb.dev_common_alb.id
   port              = "80"
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_alb_target_group.default.id
+    target_group_arn = aws_alb_target_group.dev_common_target_group.id
     type             = "forward"
   }
 }
 
 resource "aws_alb_listener" "https"{
-  load_balancer_arn = aws_alb.alb.id
+  load_balancer_arn = aws_alb.dev_common_alb.id
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
   certificate_arn   = var.certificate_arn
 
   default_action {
-    target_group_arn = aws_alb_target_group.default.id
+    target_group_arn = aws_alb_target_group.dev_common_target_group.id
     type = "fixed-response"
 
     fixed_response {
@@ -58,8 +58,8 @@ resource "aws_alb_listener" "https"{
   }
 }
 
-resource "aws_security_group" "alb" {
-  name   = "${var.alb_name}_alb"
+resource "aws_security_group" "dev_common_alb_sg" {
+  name   = "dev_common_alb_sg"
   vpc_id = var.vpc_id
 
   tags = {
@@ -73,7 +73,7 @@ resource "aws_security_group_rule" "http_from_anywhere" {
   to_port           = 80
   protocol          = "TCP"
   cidr_blocks       = var.allow_cidr_block
-  security_group_id = aws_security_group.alb.id
+  security_group_id = aws_security_group.dev_common_alb_sg.id
 }
 
 resource "aws_security_group_rule" "https_from_anywhere"{
@@ -82,7 +82,7 @@ resource "aws_security_group_rule" "https_from_anywhere"{
   to_port           = 443
   protocol          = "TCP"
   cidr_blocks       = var.allow_cidr_block
-  security_group_id = aws_security_group.alb.id
+  security_group_id = aws_security_group.dev_common_alb_sg.id
 }
 
 resource "aws_security_group_rule" "outbound_internet_access" {
@@ -91,22 +91,40 @@ resource "aws_security_group_rule" "outbound_internet_access" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.alb.id
+  security_group_id = aws_security_group.dev_common_alb_sg.id
 }
 
 
+// route53 record for the ALB
+
+
+data "aws_route53_zone" "dev_common_hosted_zone" {
+  name = var.dev_common_hosted_zone
+}
+
+
+//frog 
 resource "aws_route53_record" "dev_frog_api" {
-  zone_id = data.aws_route53_zone.hosted_zone.zone_id
+  zone_id = data.aws_route53_zone.dev_common_hosted_zone.zone_id
   name    = "dev-frog-api"
   type    = "A"
 
   alias {
-    name                   = aws_alb.alb.dns_name
-    zone_id                = aws_alb.alb.zone_id
+    name                   = aws_alb.dev_common_alb.dns_name
+    zone_id                = aws_alb.dev_common_alb.zone_id
     evaluate_target_health = false
   }
 }
 
-data "aws_route53_zone" "hosted_zone" {
-  name = var.hosted_zone
+//food
+resource "aws_route53_record" "dev_food-recommendation_api" {
+  zone_id = data.aws_route53_zone.dev_common_hosted_zone.zone_id
+  name    = "dev-food-recommendation-api"
+  type    = "A"
+
+  alias {
+    name                   = aws_alb.dev_common_alb.dns_name
+    zone_id                = aws_alb.dev_common_alb.zone_id
+    evaluate_target_health = false
+  }
 }

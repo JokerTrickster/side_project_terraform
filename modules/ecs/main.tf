@@ -32,7 +32,7 @@ module "ecs_instances" {
   min_size                = var.min_size
   desired_capacity        = var.desired_capacity
   vpc_id                  = module.network.vpc_id
-  iam_instance_profile_id = aws_iam_instance_profile.ecs.id
+  iam_instance_profile_id = aws_iam_instance_profile.dev_common_ecs_instance_profile.id
   key_name                = var.key_name
   load_balancers          = var.load_balancers
   # depends_id              = module.network.depends_id
@@ -46,12 +46,16 @@ resource "aws_ecs_cluster" "cluster" {
 }
 
 
-resource "aws_ecs_task_definition" "task_definition" {
-  family = "${var.environment}_${var.cluster}" //dev_frog
+// 태스크 정의
+
+
+//frog 
+resource "aws_ecs_task_definition" "dev_frog_task_definition" {
+  family = "dev_frog" //dev_frog
   container_definitions = jsonencode([
     {
-      name      = "${var.environment}_${var.cluster}"
-      image     = "${module.ecr.ecr_repository_url}" //"__REPO_DOMAIN__/__REPO_URL__@__IMAGE_DIGEST__"
+      name      = "dev_frog"
+      image     = "${module.ecr.dev_frog_ecr_repository_url}" //"__REPO_DOMAIN__/__REPO_URL__@__IMAGE_DIGEST__"
       cpu       = 2048
       memory    = 412
       essential = true
@@ -102,6 +106,26 @@ resource "aws_ecs_task_definition" "task_definition" {
                 {
                     name: "MYSQL_DATABASE",
                     value: "frog_dev"
+                },
+                {
+                    name: "REDIS_USER",
+                    value: "frog"
+                },
+                {
+                  name: "REDIS_HOST",
+                  value: "devstg_redis.internal_ap-northeast-2"
+                },
+                {
+                  name: "REDIS_PORT",
+                  value: "6379"
+                },
+                {
+                  name: "REDIS_DB",
+                  value: "1"
+                },
+                {
+                  name: "REDIS_PASSWORD",
+                  value: "asdasd123"
                 }
       ]
 
@@ -109,7 +133,98 @@ resource "aws_ecs_task_definition" "task_definition" {
   ])
   network_mode = "awsvpc"
   requires_compatibilities = ["EC2"]
-  execution_role_arn = module.ecs_roles.ecs_default_task_execution_role_arn
-  task_role_arn = module.ecs_roles.ecs_default_task_role_arn
+  execution_role_arn = module.ecs_roles.dev_frog_ecs_task_execution_role_arn
+  task_role_arn = module.ecs_roles.dev_frog_ecs_task_role_arn
+  
+}
+
+
+
+//frog 
+resource "aws_ecs_task_definition" "dev_food_task_definition" {
+  family = "dev_food-recommendation" //dev_frog
+  container_definitions = jsonencode([
+    {
+      name      = "dev_food-recommendation"
+      image     = "${module.ecr.dev_food_ecr_repository_url}" //"__REPO_DOMAIN__/__REPO_URL__@__IMAGE_DIGEST__"
+      cpu       = 2048
+      memory    = 412
+      essential = true
+      portMappings = [
+        {
+          containerPort = 80
+          hostPort      = 80
+          protocal      = "tcp"
+        }
+      ]
+      environment = [
+                {
+                    name: "PROJECT",
+                    value: "food"
+                },
+                {
+                    name: "PORT",
+                    value: "80"
+                },
+                {
+                    name: "ENV",
+                    value: "__ENV__"
+                },
+                {
+                    name: "REGION",
+                    value: "__REGION__"
+                },
+                {
+                    name: "IS_LOCAL",
+                    value: "false"
+                },
+                {
+                    name: "MYSQL_USER",
+                    value: "food"
+                },
+                {
+                    name: "MYSQL_PASSWORD",
+                    value: "examplepassword"
+                },
+                {
+                    name: "MYSQL_HOST",
+                    value: "devstg_mongodb.internal_ap-northeast-2"
+                },
+                {
+                    name: "MYSQL_PORT",
+                    value: "3306"
+                },
+                {
+                    name: "MYSQL_DATABASE",
+                    value: "dev_food"
+                },
+                {
+                    name: "REDIS_USER",
+                    value: "food"
+                },
+                {
+                  name: "REDIS_HOST",
+                  value: "devstg_redis.internal_ap-northeast-2"
+                },
+                {
+                  name: "REDIS_PORT",
+                  value: "6379"
+                },
+                {
+                  name: "REDIS_DB",
+                  value: "0"
+                },
+                {
+                  name: "REDIS_PASSWORD",
+                  value: "asdasd123"
+                }
+      ]
+
+    }
+  ])
+  network_mode = "awsvpc"
+  requires_compatibilities = ["EC2"]
+  execution_role_arn = module.ecs_roles.dev_food_ecs_task_execution_role_arn
+  task_role_arn = module.ecs_roles.dev_food_ecs_task_role_arn
   
 }
