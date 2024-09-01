@@ -69,6 +69,9 @@ variable "instance_type" {
   description = "Size of instances in the ECS cluster."
 }
 
-output "dev_common_target_group" {
-  value = module.ecs.dev_common_target_group
+output "dev_frog_target_group" {
+  value = module.ecs.dev_frog_target_group
+}
+output "dev_food_target_group" {
+  value = module.ecs.dev_food_target_group
 }
