@@ -16,6 +16,7 @@ echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile
 source ~/.profile
 
 # Prometheus 설치 및 실행
+mkdir /home/ubuntu/prometheus && cd /home/ubuntu/prometheus
 wget https://github.com/prometheus/prometheus/releases/download/v2.6.1/prometheus-2.6.1.linux-arm64.tar.gz
 tar xzvf prometheus-2.6.1.linux-arm64.tar.gz
 cd prometheus-2.6.1.linux-arm64
@@ -25,12 +26,13 @@ nohup ./prometheus &
 sudo apt-get install -y adduser libfontconfig1 musl
 
 # Grafana 설치 및 시작
+mkdir /home/ubuntu/grafana && cd /home/ubuntu/grafana
 wget https://dl.grafana.com/enterprise/release/grafana-enterprise_11.1.0_arm64.deb
 sudo dpkg -i grafana-enterprise_11.1.0_arm64.deb
 sudo systemctl start grafana-server
 
 # Loki 설치 및 실행
-mkdir ~/loki && cd ~/loki
+mkdir /home/ubuntu/loki && cd /home/ubuntu/loki
 wget https://github.com/grafana/loki/releases/download/v2.6.1/loki-linux-arm64.zip 
 sudo apt install unzip 
 unzip loki-linux-arm64.zip
