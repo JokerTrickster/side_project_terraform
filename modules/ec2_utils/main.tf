@@ -4,6 +4,7 @@ module "ssm" {
   dev_common_redis_host = aws_eip.dev_common_utils_eip[0].public_ip
 }
 
+
 resource "aws_security_group" "dev_common_utils_sg" {
   name        = "dev_common_utils_security_group"
   description = "Allow SSH access from all IPs"

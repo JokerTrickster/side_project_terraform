@@ -42,6 +42,16 @@ resource "aws_iam_policy" "dev_frog_ecs_task_policy" {
         Action: ["ssm:*"],
         Effect: "Allow",
         Resource: "*"
+      },
+      {
+        Action: ["s3:*"],
+        Effect: "Allow",
+        Resource: "arn:aws:s3:::dev-frog/*"
+      },
+      {
+        Action: ["ses:*"],
+        Effect: "Allow",
+        Resource: "*"
       }
     ]
 })
@@ -140,6 +150,16 @@ resource "aws_iam_policy" "dev_food_ecs_task_policy" {
       },
       {
         Action: ["ssm:*"],
+        Effect: "Allow",
+        Resource: "*"
+      },
+      {
+        Action: ["s3:*"],
+        Effect: "Allow",
+        Resource: "arn:aws:s3:::dev-food-recommendation/*"
+      },
+      {
+        Action: ["ses:*"],
         Effect: "Allow",
         Resource: "*"
       }
