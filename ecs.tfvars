@@ -41,4 +41,4 @@ desired_capacity = 3
 
 # Size of instances in the ECS cluster.
 # t4g.micro	USD 0.0084	최대 5기가비트
-instance_type = "t4g.micro"
+instance_type = "t4g.small"
