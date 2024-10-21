@@ -18,13 +18,6 @@ resource "aws_security_group" "dev_common_sg_nat_instance" {
 resource "aws_instance" "dev_common_nat_instance" {
     ami = "ami-01ad0c7a4930f0e43"
     instance_type = "t3.nano"
-    instance_market_options {
-      market_type = "spot"
-      spot_options {
-       max_price = 0.0092 
-      }
-      
-    }
     vpc_security_group_ids = [aws_security_group.dev_common_sg_nat_instance.id]
     subnet_id = var.public_subnets[0]
     associate_public_ip_address = true
@@ -37,7 +30,7 @@ resource "aws_instance" "dev_common_nat_instance" {
         encrypted = true
     }
     tags = {
-        Name = "dev_common_nat_instance_spot"
+        Name = "dev_common_nat_instance"
     }
 }
 
