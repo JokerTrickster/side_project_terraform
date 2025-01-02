@@ -38,6 +38,13 @@ resource "aws_security_group" "dev_common_utils_sg" {
     cidr_blocks = [var.vpc_cidr]
   }
 
+  // rabbitmq port
+  ingress {
+    from_port   = 5672
+    to_port     = 5672
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+  }
 
 
   egress {

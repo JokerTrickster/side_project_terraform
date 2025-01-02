@@ -1,8 +1,26 @@
 #!/bin/bash
 
-# Docker 설치
+# 기존 Docker 설치 제거 및 업데이트
+sudo rm -f /usr/libexec/docker/cli-plugins/docker-buildx
+sudo rm -f /usr/local/lib/docker/cli-plugins/docker-buildx
+sudo rm -f ~/.docker/cli-plugins/docker-buildx
+
+# Docker의 공식 GPG 키 추가
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+# Docker 저장소 추가
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# 패키지 목록 업데이트 및 Docker 및 관련 플러그인 설치
 sudo apt-get update
-sudo apt-get install -y docker.io
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Docker 데몬 시작 및 활성화
+sudo systemctl start docker
+sudo systemctl enable docker
 
 # Docker 사용을 위해 현재 사용자를 docker 그룹에 추가
 sudo usermod -aG docker ubuntu
@@ -11,7 +29,7 @@ sudo usermod -aG docker ubuntu
 sudo apt-get install -y awscli
 
 # Go 언어 설치
-sudo apt-get install -y golang-go 
+sudo apt-get install -y golang-go
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile
 source ~/.profile
 
@@ -33,8 +51,8 @@ sudo systemctl start grafana-server
 
 # Loki 설치 및 실행
 mkdir /home/ubuntu/loki && cd /home/ubuntu/loki
-wget https://github.com/grafana/loki/releases/download/v2.6.1/loki-linux-arm64.zip 
-sudo apt install unzip 
+wget https://github.com/grafana/loki/releases/download/v2.6.1/loki-linux-arm64.zip
+sudo apt install unzip
 unzip loki-linux-arm64.zip
 wget https://raw.githubusercontent.com/grafana/loki/v2.6.1/cmd/loki/loki-local-config.yaml
 nohup ./loki-linux-arm64 -config.file=loki-local-config.yaml &
